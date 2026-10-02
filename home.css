@@ -1,0 +1,280 @@
+/* 1. Глобальный сброс и включение border-box */
+
+*, *::before, *::after {
+
+margin: 0;
+padding: 0;
+box-sizing: border-box; /* Теперь отступы сжимаются внутрь и не раздувают блоки */
+
+}
+
+/* 2. Общие стили для всей страницы */
+
+body {
+
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт без засечек */
+
+line-height: 1.6; /* Комфортный межстрочный интервал для чтения */
+
+background-color: #f4f4f9; /* Мягкий светло-серый фон страницы */
+
+color: #333333; /* Темно-серый цвет текста вместо едкого черного */
+
+}
+
+/* 3. Стили для шапки сайта */
+
+header {
+
+background-color: #000000; /* Глубокий темно-синий цвет фона */
+opacity: 100%;
+color: #ffffff; /* Белый цвет для текста заголовка */
+
+padding: 10px 10px; /* Внутренние отступы: 30px сверху/снизу, 20px слева/справа */
+
+text-align: center; /* Выравнивание содержимого по центру */
+
+}
+
+
+header h1 {
+
+font-size: 2.5rem; /* Крупный размер главного заголовка */
+
+margin-bottom: 15px; /* Отталкиваем меню навигации вниз на 15 пикселей */
+
+letter-spacing: 1px; /* Небольшое расстояние между буквами */
+
+}
+
+/* Навигация внутри шапки */
+
+nav ul {
+
+list-style: none; /* Полностью убираем маркеры списков */
+
+}
+
+
+nav ul li {
+
+display: inline-block; /* Позволяет выстроить элементы списка в одну горизонтальную линию */
+
+margin: 0 15px; /* Отступы по 15px слева и справа между пунктами меню */
+
+}
+
+
+nav ul li a {
+
+color: #ffffff; /* Белые ссылки */
+
+text-decoration: none; /* Убираем стандартное подчеркивание ссылок */
+
+font-weight: 600; /* Делаем шрифт ссылок полужирным */
+
+transition: color 0.3s ease; /* Плавное изменение цвета при наведении */
+
+}
+
+/* Псевдокласс :hover — что происходит при наведении курсора */
+
+nav ul li a:hover {
+
+color: #1abc9c; /* При наведении ссылка плавно станет бирюзовой */
+
+}
+
+/* 4. Основной контейнер содержимого */
+
+main {
+
+max-width: 850px; /* Сайт не будет растягиваться шире 850 пикселей */
+
+margin: 40px auto; /* Внешние отступы: 40px сверху/снизу, а 'auto' центрирует весь блок по горизонтали */
+
+padding: 0 20px; /* Защитные отступы по бокам, чтобы на смартфонах текст не лип к экрану */
+
+}
+
+
+/* Раздел со статьями */
+
+section h2 {
+
+font-size: 1.8rem;
+
+color: #603e50;
+
+margin-bottom: 25px; /* Отступ от заголовка секции до первой статьи */
+
+}
+
+
+/* Карточка отдельной статьи */
+
+article {
+
+background-color: #000000; /* Чистый белый фон карточки */
+width: 325px;
+padding: 2px; /* Щедрый внутренний отступ для создания "воздуха" вокруг текста */
+
+margin-bottom: 35px; /* Расстояние между соседними карточками статей */
+
+border-radius: 8px; /* Мягкое скругление углов карточки */
+border: 1px solid #e2e8f0; /* Тонкая, едва заметная серая рамка */
+
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Легкая тЕНЬ для эффекта объема */
+
+}
+
+/* Шапка внутри статьи (заголовок и дата) */
+
+article header h3 {
+
+font-size: 2rem;
+color: #ffffff;
+margin-bottom: 12px;
+text-align: left;
+
+}
+
+
+article header p {
+
+font-size: 0.9rem;
+
+color: #bab9b9; /* Светло-серый цвет для даты */
+text-align: left;
+margin-bottom: 6px;
+
+}
+
+
+/* Текст статьи */
+
+article p {
+
+color: #ffffff; /* Чуть более мягкий цвет для основного чтения */
+
+margin-bottom: 20px; /* Отступ до подвала статьи */
+
+}
+
+/* Подвал внутри статьи (теги) */
+
+article footer {
+
+/* border-top: 1px dashed #e2e8f0; /* Пунктирная линия, отделяющая теги */
+
+padding-top: 6px; /* Отступ сверху от линии до тегов */
+
+font-size: 0.9rem;
+
+color: #1abc9c; /* Бирюзовый цвет для тегов */
+
+font-weight: bold;
+
+}
+
+/* 5. Боковая панель (сайдбар) */
+
+aside {
+
+background-color: #eef2f3; /* Серый фон, отличный от фона страницы и карточек */
+
+padding: 25px;
+
+border-radius: 8px;
+
+border-left: 6px solid #2c3e50; /* Толстая акцентная полоса слева */
+
+margin-top: 40px; /* Отталкиваем сайдбар от блока со статьями */
+
+}
+
+
+aside h3 {
+
+color: #ffffff;
+
+margin-bottom: 10px;
+
+}
+
+
+aside p {
+
+font-size: 0.95rem;
+
+margin-bottom: 15px;
+
+}
+
+/* Глобальный подвал всего сайта */
+
+body > footer {
+
+background-color: #74495e; /* Чуть более светлый оттенок темно-синего, чем у шапки */
+
+color: #ffffff;
+
+text-align: center;
+
+padding: 20px;
+
+margin-top: 60px; /* Большой отступ от контента до самого низа */
+
+font-size: 0.9rem;
+
+}
+
+
+body > footer a {
+
+color: #1abc9c;
+
+text-decoration: none;
+
+margin-left: 10px;
+
+}
+
+
+body > footer a:hover {
+
+text-decoration: underline; /* Возвращаем подчеркивание только при наведении */
+
+}
+
+.image-container_1 {
+  background-image: url("Photoes\\3d_model_001\\slime.png");
+  height: 300px;
+  width: 300px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.image-container_2 {
+  background-image: url("Photoes\\3d_model_002\\sfdsg.png");
+  height: 300px;
+  width: 300px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.image-container_3 {
+  background-image: url("Photoes\\3d_model_003\\sfsfsf.png");
+  height: 300px;
+  width: 300px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.parent {
+  display: inline-flex;
+  justify-items: center; /* Центрирует содержимое ячеек */
+}
