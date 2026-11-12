@@ -16,6 +16,7 @@
                 <li><a href="#home">Главная</a></li>
                 <li><a href="#articles">Магазин</a></li>
                 <li><a href="#about">О сервисе</a></li>
+                <li><button class="theme-btn" id="themeBtn">🌙 Темная тема</button></li>
             </ul>
         </nav>
     </header>
@@ -25,50 +26,59 @@
 
         <!-- Крупный логический раздел: Список статей -->
         <section id="articles">
-            <h2>Новые публикации</h2>
+            <h2>Портфолио 3D-моделей</h2>
 
-            <!-- Независимый, самодостаточный блок: Статья 1 -->
-            <div class="parent">
-                <article>
-                    <header>
-                        <h3>Slime</h3>
-                        <p>Опубликовано: <time datetime="2026-09-10">10 сентября 2026</time></p>
-                        <div class="image-container_1"></div>
-                        <p>by Nikolay Gordeev</p>
-                        <p>теги: #genshinimpact</p>
-                    </header>  
-                </article>
+            <!-- Форма добавления новой статьи -->
+            <form id="addArticleForm" class="article-form">
+                <h3>Добавить новую 3D-модель</h3>
 
-            <!-- Независимый, самодостаточный блок: Статья 2 -->
-                <article>
-                    <header>
-                        <h3>Fischl</h3>
-                        <p>Опубликовано: <time datetime="2026-09-10">10 сентября 2026</time></p>
-                        <div class="image-container_2"></div>
-                        <p>by Nikolay Gordeev</p> 
-                        <p>теги: #genshinimpact</p>
-                    </header>  
-                </article>
+                <div class="form-group">
+                    <label for="postTitle">Название модели:</label>
+                    <input type="text" id="postTitle" required placeholder="Например: Dragon Character">
+                </div>
 
-                <article>
-                    <header>
-                        <h3>lauma</h3>
-                        <p>Опубликовано: <time datetime="2026-09-10">10 сентября 2026</time></p>
-                        <div class="image-container_3"></div>
-                        <p>by Nikolay Gordeev</p> 
-                        <p>теги: #genshinimpact</p>
-                    </header>  
-                </article>
+                <div class="form-group">
+                    <label for="postImage">Изображение модели:</label>
+                    <input type="file" id="postImage" accept="image/*">
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postModel">Файл 3D-модели (необязательно):</label>
+                    <input type="file" id="postModel" accept=".obj,.fbx,.gltf,.glb,.blend,.dae,.stl">
+                    <div id="modelInfo" class="model-info"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="postText">Описание модели:</label>
+                    <textarea id="postText" rows="4" required placeholder="Опишите процесс создания, использованные техники и программы..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="postTags">Теги (через пробел):</label>
+                    <input type="text" id="postTags" placeholder="Например: #blender #character #lowpoly">
+                </div>
+
+                <button type="submit" class="submit-btn">Опубликовать модель</button>
+            </form>
+
+            <!-- Поле живого поиска -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Поиск по моделям, тегам или описанию...">
             </div>
 
+            <!-- В этот пустой контейнер JavaScript будет вставлять наши статьи -->
+            <div id="postsContainer">
+                <!-- Старые статьи удалены, теперь они генерируются через JS -->
+            </div>
         </section>
 
         <!-- Боковая панель (Дополнительный контент, косвенно связанный с основным) -->
         <aside id="about">
-            <h3>Об сервере</h3>
-            <p>Это сайт посвященный 3д моделированию.</p>
+            <h3>О галерее</h3>
+            <p>Портфолио 3D-моделей и визуализаций. Здесь представлены работы по созданию персонажей, окружения и объектов в Blender.</p>
             <h3>Подписка</h3>
-            <p>Следите за мной в Telegram и YouTube.</p>
+            <p>Следите за новыми работами в Telegram и YouTube.</p>
         </aside>
 
     </main>
@@ -79,5 +89,6 @@
         <p><a href="#privacy">Политика конфиденциальности</a></p>
     </footer>
 
+    <script src="FrogScript.js"></script>
 </body>
 </html>
