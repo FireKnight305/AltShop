@@ -1,39 +1,70 @@
 // ============================================
+// ИНИЦИАЛИЗАЦИЯ IndexedDB ДЛЯ БОЛЬШИХ ФАЙЛОВ
+// ============================================
+
+let db;
+const DB_NAME = 'AltShop3DModels';
+const DB_VERSION = 1;
+const STORE_NAME = 'models';
+
+// Открываем/создаем базу данных IndexedDB
+const dbRequest = indexedDB.open(DB_NAME, DB_VERSION);
+
+dbRequest.onerror = function(event) {
+    console.error('Ошибка открытия IndexedDB:', event.target.error);
+};
+
+dbRequest.onsuccess = function(event) {
+    db = event.target.result;
+    console.log('IndexedDB успешно открыта');
+};
+
+dbRequest.onupgradeneeded = function(event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        console.log('Хранилище моделей создано');
+    }
+};
+
+// Функция сохранения модели в IndexedDB
+function saveModelToIndexedDB(modelId, fileBlob, fileName) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const data = {
+            id: modelId,
+            file: fileBlob,
+            fileName: fileName
+        };
+
+        const request = store.put(data);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// Функция загрузки модели из IndexedDB
+function getModelFromIndexedDB(modelId) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.get(modelId);
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// ============================================
 // ПР5: ДИНАМИЧЕСКИЙ РЕНДЕРИНГ КОНТЕНТА
 // ============================================
 
 // Имитация базы данных статей (загружаем из LocalStorage или используем начальные данные)
 let initialArticles = JSON.parse(localStorage.getItem('myBlogPosts')) || [
-    {
-        id: 1,
-        title: "Slime",
-        date: "10 сентября 2026",
-        isoDate: "2026-09-10",
-        author: "Nikolay Gordeev",
-        text: "Милый слайм из игры Genshin Impact. Эта 3D-модель была создана с вниманием к деталям: текстуры, анимация и освещение делают персонажа живым. Идеально подходит для портфолио или игровых проектов.",
-        tags: "#genshinimpact",
-        imageClass: "image-container_1"
-    },
-    {
-        id: 2,
-        title: "Fischl",
-        date: "10 сентября 2026",
-        isoDate: "2026-09-10",
-        author: "Nikolay Gordeev",
-        text: "Детализированная модель Fischl — принцессы осуждения из Genshin Impact. Сложный костюм, выразительная поза и качественный риггинг для анимаций. Отличная работа для демонстрации навыков моделирования персонажей.",
-        tags: "#genshinimpact",
-        imageClass: "image-container_2"
-    },
-    {
-        id: 3,
-        title: "Lauma",
-        date: "10 сентября 2026",
-        isoDate: "2026-09-10",
-        author: "Nikolay Gordeev",
-        text: "Элегантная модель Lauma с красивым освещением и композицией. Проект демонстрирует работу с материалами, текстурами и рендерингом. Создан в Blender с использованием Cycles для реалистичного результата.",
-        tags: "#genshinimpact #blender",
-        imageClass: "image-container_3"
-    }
+
 ];
 
 const postsContainer = document.getElementById('postsContainer');
@@ -67,7 +98,7 @@ function renderArticles(articlesArray) {
 
         // Создаем HTML-шаблон для карточки статьи
         const articleHtml = `
-            <article>
+            <article data-article-id="${article.id}">
                 <header>
                     <h3>${article.title}</h3>
                     <p>Опубликовано: <time datetime="${article.isoDate}">${article.date}</time></p>
@@ -79,10 +110,10 @@ function renderArticles(articlesArray) {
                 <footer>
                     <p>теги: ${article.tags}</p>
                 </footer>
-                ${article.modelFile && article.modelFileName ?
-                    `<a href="${article.modelFile}" download="${article.modelFileName}" class="download-model-btn">
-                        📥 Скачать модель (${article.modelFileName.split('.').pop().toUpperCase()})
-                    </a>`
+                ${article.modelId && article.modelFileName ?
+                    `<button class="download-model-btn" data-model-id="${article.modelId}" data-model-filename="${article.modelFileName}">
+                        📥 Скачать архив (${article.modelFileName.split('.').pop().toUpperCase()})
+                    </button>`
                     : ''}
                 <button class="like-btn">❤ <span class="like-count">0</span></button>
             </article>
@@ -95,6 +126,7 @@ function renderArticles(articlesArray) {
     // После рендеринга переинициализируем обработчики для новых элементов
     initializeLikeButtons();
     initializeReadMoreButtons();
+    initializeDownloadButtons();
 }
 
 // Запускаем первичный рендер при загрузке страницы
@@ -207,6 +239,60 @@ function initializeReadMoreButtons() {
 }
 
 // ============================================
+// ОБРАБОТЧИК СКАЧИВАНИЯ МОДЕЛЕЙ ИЗ IndexedDB
+// ============================================
+
+function initializeDownloadButtons() {
+    const downloadButtons = document.querySelectorAll('.download-model-btn');
+
+    downloadButtons.forEach(function(button) {
+        button.addEventListener('click', async function() {
+            const modelId = button.getAttribute('data-model-id');
+            const modelFileName = button.getAttribute('data-model-filename');
+
+            try {
+                // Показываем индикатор загрузки
+                button.textContent = '⏳ Загрузка...';
+                button.disabled = true;
+
+                // Получаем файл из IndexedDB
+                const modelData = await getModelFromIndexedDB(modelId);
+
+                if (modelData && modelData.file) {
+                    // Создаём URL для скачивания
+                    const blob = modelData.file;
+                    const url = URL.createObjectURL(blob);
+
+                    // Создаём временную ссылку и кликаем по ней
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = modelFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    // Освобождаем память
+                    URL.revokeObjectURL(url);
+
+                    // Возвращаем кнопку в исходное состояние
+                    button.textContent = `📥 Скачать архив (${modelFileName.split('.').pop().toUpperCase()})`;
+                    button.disabled = false;
+                } else {
+                    alert('❌ Файл модели не найден');
+                    button.textContent = `📥 Скачать архив (${modelFileName.split('.').pop().toUpperCase()})`;
+                    button.disabled = false;
+                }
+            } catch (error) {
+                console.error('Ошибка при скачивании:', error);
+                alert('❌ Ошибка при скачивании файла');
+                button.textContent = `📥 Скачать архив (${modelFileName.split('.').pop().toUpperCase()})`;
+                button.disabled = false;
+            }
+        });
+    });
+}
+
+// ============================================
 // ПР7: ФОРМА ДОБАВЛЕНИЯ НОВЫХ СТАТЕЙ
 // ============================================
 
@@ -244,12 +330,22 @@ postModelInput.addEventListener('change', function(event) {
     const file = event.target.files[0];
 
     if (file) {
+        const maxSize = 500 * 1024 * 1024; // 500 МБ в байтах
+
+        if (file.size > maxSize) {
+            alert('⚠️ Файл слишком большой! Максимальный размер: 500 МБ');
+            postModelInput.value = '';
+            modelInfo.innerHTML = '';
+            modelInfo.style.display = 'none';
+            return;
+        }
+
         const fileSize = (file.size / 1024 / 1024).toFixed(2); // Размер в МБ
         const fileName = file.name;
         const fileExt = fileName.split('.').pop().toUpperCase();
 
         modelInfo.innerHTML = `
-            <strong>📦 Файл модели:</strong> ${fileName}<br>
+            <strong>📦 Файл архива:</strong> ${fileName}<br>
             <strong>Формат:</strong> ${fileExt}<br>
             <strong>Размер:</strong> ${fileSize} МБ
         `;
@@ -276,57 +372,57 @@ addForm.addEventListener('submit', function(event) {
         return;
     }
 
-    if (textValue.length < 20) {
-        alert('Ошибка: Описание слишком короткое. Расскажите подробнее (минимум 20 символов)!');
+    if (textValue.length < 5) {
+        alert('Ошибка: Описание слишком короткое. Расскажите подробнее (минимум 5 символов)!');
         return;
     }
 
-    // Обработка изображения
+    // Обработка изображения и 3D-модели
     let imageDataUrl = '';
-    const file = postImageInput.files[0];
-
-    // Обработка 3D-модели
-    let modelDataUrl = '';
-    let modelFileName = '';
+    const imageFile = postImageInput.files[0];
     const modelFile = postModelInput.files[0];
 
-    if (file || modelFile) {
+    if (imageFile || modelFile) {
         // Если есть файлы, обрабатываем их асинхронно
         const promises = [];
 
-        if (file) {
+        // Обработка изображения (сохраняем как base64)
+        if (imageFile) {
             promises.push(new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imageDataUrl = e.target.result;
                     resolve();
                 };
-                reader.readAsDataURL(file);
-            }));
-        }
-
-        if (modelFile) {
-            modelFileName = modelFile.name;
-            promises.push(new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    modelDataUrl = e.target.result;
-                    resolve();
-                };
-                reader.readAsDataURL(modelFile);
+                reader.readAsDataURL(imageFile);
             }));
         }
 
         Promise.all(promises).then(() => {
-            createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, modelDataUrl, modelFileName);
+            // Создаём статью с уникальным ID для модели
+            const modelId = modelFile ? `model_${Date.now()}` : null;
+
+            if (modelFile) {
+                // Сохраняем ZIP-архив в IndexedDB
+                saveModelToIndexedDB(modelId, modelFile, modelFile.name)
+                    .then(() => {
+                        createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, modelId, modelFile.name);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка сохранения модели:', error);
+                        alert('❌ Ошибка при сохранении модели. Попробуйте файл меньшего размера.');
+                    });
+            } else {
+                createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, null, '');
+            }
         });
     } else {
-        createAndSaveArticle(titleValue, textValue, tagsValue, '', '', '');
+        createAndSaveArticle(titleValue, textValue, tagsValue, '', null, '');
     }
 });
 
 // Функция создания и сохранения статьи
-function createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, modelDataUrl, modelFileName) {
+function createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, modelId, modelFileName) {
     // Формируем красивую дату для новой статьи (сегодняшний день)
     const today = new Date();
     const formattedDate = today.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -343,14 +439,14 @@ function createAndSaveArticle(titleValue, textValue, tagsValue, imageDataUrl, mo
         tags: tagsValue,
         imageClass: "",
         customImage: imageDataUrl, // Сохраняем изображение как base64
-        modelFile: modelDataUrl, // Сохраняем 3D-модель как base64
+        modelId: modelId, // ID модели в IndexedDB
         modelFileName: modelFileName // Имя файла модели
     };
 
     // 5. ДОБАВЛЯЕМ СТАТЬЮ В НАШУ "БАЗУ ДАННЫХ" (в начало массива)
     initialArticles.unshift(newArticle);
 
-    // 6. СОХРАНЯЕМ В LocalStorage
+    // 6. СОХРАНЯЕМ В LocalStorage (без самого файла модели)
     localStorage.setItem('myBlogPosts', JSON.stringify(initialArticles));
 
     // 7. ОБНОВЛЯЕМ ИНТЕРФЕЙС (перерисовываем список статей)
