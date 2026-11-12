@@ -1,94 +1,59 @@
 /* 1. Глобальный сброс и включение border-box */
 
 *, *::before, *::after {
-
-margin: 0;
-padding: 0;
-box-sizing: border-box; /* Теперь отступы сжимаются внутрь и не раздувают блоки */
-
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* 2. Общие стили для всей страницы */
 
 body {
-
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт без засечек */
-
-line-height: 1.6; /* Комфортный межстрочный интервал для чтения */
-
-background-color: #f5f5f5; /* Светло-серый фон страницы */
-
-color: #1a1a1a; /* Почти черный текст */
-
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    color: #1a1a1a;
 }
 
 /* 3. Стили для шапки сайта */
 
 header {
-
-background-color: #000000; /* Глубокий темно-синий цвет фона */
-opacity: 100%;
-color: #ffffff; /* Белый цвет для текста заголовка */
-
-padding: 20px 40px; /* Внутренние отступы: 20px сверху/снизу, 40px слева/справа */
-
-/* Превращаем шапку во флекс-контейнер */
-display: flex;
-justify-content: space-between; /* Название влево, меню вправо */
-align-items: center; /* Выравнивание по центру по вертикали */
-
+    background-color: #000000;
+    color: #ffffff;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-
 header h1 {
-
-font-size: 1.8rem; /* Крупный размер главного заголовка */
-
-margin-bottom: 0; /* Убираем отступ, так как элементы на одной линии */
-
-letter-spacing: 1px; /* Небольшое расстояние между буквами */
-
+    font-size: 1.8rem;
+    margin-bottom: 0;
+    letter-spacing: 1px;
 }
 
 /* Навигация внутри шапки */
 
 nav ul {
-
-list-style: none; /* Полностью убираем маркеры списков */
-
-/* Меню тоже становится флекс-контейнером */
-display: flex;
-gap: 25px; /* Автоматический зазор между пунктами меню */
-align-items: center; /* Выравнивание кнопки темы с ссылками */
-
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    align-items: center;
 }
-
 
 nav ul li {
-
-margin: 0; /* Обнуляем старые маргины, за них теперь отвечает gap */
-
+    margin: 0;
 }
-
 
 nav ul li a {
-
-color: #ffffff; /* Белые ссылки */
-
-text-decoration: none; /* Убираем стандартное подчеркивание ссылок */
-
-font-weight: 600; /* Делаем шрифт ссылок полужирным */
-
-transition: color 0.3s ease; /* Плавное изменение цвета при наведении */
-
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
-/* Псевдокласс :hover — что происходит при наведении курсора */
-
 nav ul li a:hover {
-
-color: #cccccc; /* При наведении ссылка станет светло-серой */
-
+    color: #cccccc;
 }
 
 /* Стили для кнопки переключения темы */
@@ -110,219 +75,151 @@ color: #cccccc; /* При наведении ссылка станет свет�
 /* 4. Основной контейнер содержимого */
 
 main {
-
-max-width: 1150px; /* Увеличиваем ширину для двухколоночного макета */
-
-margin: 40px auto; /* Внешние отступы: 40px сверху/снизу, а 'auto' центрирует весь блок по горизонтали */
-
-padding: 0 20px; /* Защитные отступы по бокам, чтобы на смартфонах текст не лип к экрану */
-
-/* ВКЛЮЧАЕМ FLEXBOX */
-display: flex;
-gap: 30px; /* Автоматический зазор между колонками */
-align-items: flex-start; /* Сайдбар не растягивается */
-
+    max-width: 1280px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
 }
 
-
 /* Раздел со статьями */
-
 main section {
-flex: 7; /* Занимает 70% ширины */
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 section h2 {
-
-font-size: 1.8rem;
-
-color: #000000;
-
-margin-bottom: 25px; /* Отступ от заголовка секции до первой статьи */
-
+    font-size: 1.8rem;
+    color: #000000;
+    margin-bottom: 25px;
 }
 
-
 /* Карточка отдельной статьи */
-
 article {
-
-background-color: #000000; /* Чистый белый фон карточки */
-width: 100%; /* Адаптивная ширина */
-max-width: 400px; /* Максимальная ширина карточки */
-padding: 15px; /* Увеличенный внутренний отступ */
-
-margin-bottom: 35px; /* Расстояние между соседними карточками статей */
-
-border-radius: 8px; /* Мягкое скругление углов карточки */
-border: 1px solid #e2e8f0; /* Тонкая, едва заметная серая рамка */
-
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Легкая тЕНЬ для эффекта объема */
-
+    background-color: #000000;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Шапка внутри статьи (заголовок и дата) */
-
 article header h3 {
-
-font-size: 1.8rem;
-color: #ffffff;
-margin-bottom: 8px;
-text-align: left;
-
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+    text-align: left;
 }
-
 
 article header p {
-
-font-size: 0.9rem;
-
-color: #888888; /* Серый цвет для даты */
-text-align: left;
-margin-bottom: 10px;
-
+    font-size: 0.9rem;
+    color: #888888;
+    text-align: left;
+    margin-bottom: 10px;
 }
 
-
 /* Текст статьи */
-
 article p {
-
-color: #ffffff; /* Чуть более мягкий цвет для основного чтения */
-
-margin-bottom: 15px; /* Отступ до подвала статьи */
-line-height: 1.5;
-
+    color: #ffffff;
+    margin-bottom: 15px;
+    line-height: 1.5;
 }
 
 /* Подвал внутри статьи (теги) */
-
 article footer {
-
-/* border-top: 1px dashed #e2e8f0; /* Пунктирная линия, отделяющая теги */
-
-padding-top: 10px; /* Отступ сверху от линии до тегов */
-
-font-size: 0.85rem;
-
-color: #666666; /* Серый цвет для тегов */
-
-font-weight: bold;
-margin-bottom: 10px;
-
+    padding-top: 10px;
+    font-size: 0.85rem;
+    color: #666666;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* 5. Боковая панель (сайдбар) */
 
 main aside {
-flex: 3; /* Занимает 30% ширины */
-margin-top: 0; /* Убираем верхний отступ, так как теперь сбоку */
+    flex: 0 0 320px;
+    margin-top: 0;
 }
 
 aside {
-
-background-color: #e8e8e8; /* Светло-серый фон */
-
-padding: 25px;
-
-border-radius: 8px;
-
-border-left: 6px solid #000000; /* Черная акцентная полоса слева */
-
+    background-color: #e8e8e8;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 6px solid #000000;
 }
-
 
 aside h3 {
-
-color: #000000;
-
-margin-bottom: 10px;
-
+    color: #000000;
+    margin-bottom: 10px;
 }
 
-
 aside p {
-
-font-size: 0.95rem;
-
-margin-bottom: 15px;
-
+    font-size: 0.95rem;
+    margin-bottom: 15px;
 }
 
 /* Глобальный подвал всего сайта */
 
 body > footer {
-
-background-color: #2a2a2a; /* Темно-серый фон */
-
-color: #ffffff;
-
-text-align: center;
-
-padding: 20px;
-
-margin-top: 60px; /* Большой отступ от контента до самого низа */
-
-font-size: 0.9rem;
-
+    background-color: #2a2a2a;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    font-size: 0.9rem;
 }
-
 
 body > footer a {
-
-color: #cccccc;
-
-text-decoration: none;
-
-margin-left: 10px;
-
+    color: #cccccc;
+    text-decoration: none;
+    margin-left: 10px;
 }
-
 
 body > footer a:hover {
-
-text-decoration: underline; /* Возвращаем подчеркивание только при наведении */
-
+    text-decoration: underline;
 }
 
-.image-container_1 {
-  background-image: url("Photoes\\3d_model_001\\slime.png");
-  height: 0;
-  padding-bottom: 100%; /* Сохраняет квадратное соотношение сторон */
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
+/* Изображения статей */
 
-.image-container_2 {
-  background-image: url("Photoes\\3d_model_002\\sfdsg.png");
-  height: 0;
-  padding-bottom: 100%;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
+.image-container_1,
+.image-container_2,
 .image-container_3 {
-  background-image: url("Photoes\\3d_model_003\\sfsfsf.png");
-  height: 0;
-  padding-bottom: 100%;
-  width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
-  margin-bottom: 10px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
+
+.image-container_1 { background-image: url("Photoes\\3d_model_001\\slime.png"); }
+.image-container_2 { background-image: url("Photoes\\3d_model_002\\sfdsg.png"); }
+.image-container_3 { background-image: url("Photoes\\3d_model_003\\sfsfsf.png"); }
 
 .parent {
-  display: inline-flex;
-  justify-items: center; /* Центрирует содержимое ячеек */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* Сетка карточек */
+#postsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    align-items: start;
+}
+
+#postsContainer article {
+    margin-bottom: 0;
 }
 
 /* =============================================================
@@ -330,7 +227,6 @@ text-decoration: underline; /* Возвращаем подчеркивание �
    ============================================================= */
 @media (max-width: 768px) {
 
-    /* Шапка: элементы встают друг под друга по центру */
     header {
         flex-direction: column;
         text-align: center;
@@ -338,29 +234,30 @@ text-decoration: underline; /* Возвращаем подчеркивание �
         gap: 15px;
     }
 
-    /* Главное меню в шапке: центрируем и уменьшаем зазор */
     nav ul {
         justify-content: center;
         gap: 15px;
-        flex-wrap: wrap; /* Если ссылок станет много, они перенесутся на новую строку */
+        flex-wrap: wrap;
     }
 
-    /* Основной контейнер: превращаем колонки в вертикальный ряд */
     main {
-        flex-direction: column; /* Сайдбар уходит под статьи */
+        flex-direction: column;
         gap: 20px;
         margin: 20px auto;
         padding: 0 10px;
     }
 
-    /* Карточки статей и сайдбар занимают всю доступную ширину */
     main section,
     main aside {
         flex: none;
         width: 100%;
     }
 
-    /* На мобильных карточки занимают всю ширину */
+    #postsContainer {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
     article {
         max-width: 100%;
         padding: 20px;
@@ -371,16 +268,16 @@ text-decoration: underline; /* Возвращаем подчеркивание �
    ТЕМНАЯ ТЕМА
    ============================================================= */
 body.dark-theme {
-    background-color: #1a1a2e; /* Темный фон страницы */
-    color: #e2e8f0;            /* Светлый текст */
+    background-color: #1a1a2e;
+    color: #e2e8f0;
 }
 
 body.dark-theme header {
-    background-color: #161625; /* Еще более темная шапка */
+    background-color: #161625;
 }
 
 body.dark-theme article {
-    background-color: #22223b; /* Темные карточки статей */
+    background-color: #22223b;
     border-color: #4a4e69;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -388,11 +285,11 @@ body.dark-theme article {
 body.dark-theme article header h3,
 body.dark-theme section h2,
 body.dark-theme aside h3 {
-    color: #ffffff;            /* Белые заголовки в темной теме */
+    color: #ffffff;
 }
 
 body.dark-theme aside {
-    background-color: #333333; /* Темно-серый фон сайдбара в темной теме */
+    background-color: #333333;
     border-left-color: #888888;
 }
 
@@ -438,7 +335,7 @@ body.dark-theme .like-btn:hover {
 /* Стили для сворачивания текста */
 .article-text.short {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Ограничиваем текст двумя строками */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -491,19 +388,6 @@ body.dark-theme #searchInput {
     padding: 40px 20px;
 }
 
-#postsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
-    justify-items: center;
-}
-
-@media (max-width: 768px) {
-    #postsContainer {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Стили для формы добавления статей */
 .article-form {
     background-color: #ffffff;
@@ -546,7 +430,7 @@ body.dark-theme .form-group input, body.dark-theme .form-group textarea {
 
 /* Предпросмотр изображения */
 .image-preview {
-    margin-top: 100px;
+    margin-top: 10px;
     max-width: 100%;
     display: none;
 }
