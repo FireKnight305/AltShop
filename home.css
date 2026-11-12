@@ -15,9 +15,9 @@ body {
     color: #1a1a1a;
 }
 
-/* 3. Стили для шапки сайта */
+/* 3. Стили для шапки сайта (только для самого верхнего header) */
 
-header {
+body > header {
     background-color: #000000;
     color: #ffffff;
     padding: 20px 40px;
@@ -26,33 +26,32 @@ header {
     align-items: center;
 }
 
-header h1 {
+body > header h1 {
     font-size: 1.8rem;
     margin-bottom: 0;
     letter-spacing: 1px;
 }
 
 /* Навигация внутри шапки */
-
-nav ul {
+body > header nav ul {
     list-style: none;
     display: flex;
     gap: 25px;
     align-items: center;
 }
 
-nav ul li {
+body > header nav ul li {
     margin: 0;
 }
 
-nav ul li a {
+body > header nav ul li a {
     color: #ffffff;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
-nav ul li a:hover {
+body > header nav ul li a:hover {
     color: #cccccc;
 }
 
@@ -107,6 +106,7 @@ article {
     border-radius: 8px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Защита от вылезания контента */
 }
 
 /* Шапка внутри статьи (заголовок и дата) */
@@ -147,19 +147,19 @@ main aside {
     margin-top: 0;
 }
 
-aside {
+main aside { 
     background-color: #e8e8e8;
     padding: 25px;
     border-radius: 8px;
     border-left: 6px solid #000000;
 }
 
-aside h3 {
+main aside h3 {
     color: #000000;
     margin-bottom: 10px;
 }
 
-aside p {
+main aside p {
     font-size: 0.95rem;
     margin-bottom: 15px;
 }
@@ -197,6 +197,7 @@ body > footer a:hover {
     background-position: center;
     border-radius: 8px;
     margin-bottom: 10px;
+    background-color: #e2e8f0; /* Серый фон, если картинки нет */
 }
 
 .image-container_1 { background-image: url("Photoes\\3d_model_001\\slime.png"); }
@@ -227,14 +228,14 @@ body > footer a:hover {
    ============================================================= */
 @media (max-width: 768px) {
 
-    header {
+    body > header {
         flex-direction: column;
         text-align: center;
         padding: 20px;
         gap: 15px;
     }
 
-    nav ul {
+    body > header nav ul {
         justify-content: center;
         gap: 15px;
         flex-wrap: wrap;
@@ -272,7 +273,7 @@ body.dark-theme {
     color: #e2e8f0;
 }
 
-body.dark-theme header {
+body.dark-theme > header {
     background-color: #161625;
 }
 
@@ -284,16 +285,16 @@ body.dark-theme article {
 
 body.dark-theme article header h3,
 body.dark-theme section h2,
-body.dark-theme aside h3 {
+body.dark-theme main aside h3 {
     color: #ffffff;
 }
 
-body.dark-theme aside {
+body.dark-theme main aside {
     background-color: #333333;
     border-left-color: #888888;
 }
 
-body.dark-theme footer {
+body.dark-theme > footer {
     background-color: #161625;
 }
 
